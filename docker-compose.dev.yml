@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  nginx:
+    ports:
+      - 8080:80
+
+  api:
+    build:
+      context: packages/api
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./packages/api:/usr/src
+      - /usr/src/node_modules
+    ports:
+      - 5000:3000
+
+  wordpress:
+    ports:
+      - 4000:80
+
+  www:
+    build: 
+      context: packages/www
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./packages/www:/usr/src
+      - /usr/src/node_modules
+    ports:
+      - 3000:3000
