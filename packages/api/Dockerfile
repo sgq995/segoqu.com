@@ -11,7 +11,7 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
-RUN yarn build
+RUN yarn run build
 
 # Runner
 FROM node:16-alpine AS runner
@@ -32,4 +32,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD [ "yarn", "start:prod" ]
+CMD [ "yarn", "run", "start:prod" ]
