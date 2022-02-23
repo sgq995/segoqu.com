@@ -10,8 +10,8 @@ services:
       context: packages/api
       dockerfile: Dockerfile.dev
     volumes:
-      - ./packages/api:/usr/src
       - /usr/src/node_modules
+      - ./packages/api:/usr/src
     ports:
       - 5000:3000
 
@@ -24,7 +24,7 @@ services:
       context: packages/www
       dockerfile: Dockerfile.dev
     volumes:
-      - ./packages/www:/usr/src
       - /usr/src/node_modules
+      - ./packages/www:/usr/src
     ports:
       - 3000:3000
