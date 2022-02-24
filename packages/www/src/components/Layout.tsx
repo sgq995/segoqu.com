@@ -30,7 +30,7 @@ const Layout: NextComponentType = ({ children }) => {
           </Container>
         </AppBar>
 
-        <Container component="main" maxWidth="md" sx={{ flexGrow: 1 }}>
+        <Container component="main" maxWidth="md" sx={{ py: 2, flexGrow: 1 }}>
           {children}
         </Container>
 
