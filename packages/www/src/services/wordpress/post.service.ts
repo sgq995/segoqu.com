@@ -1,7 +1,7 @@
-const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL ?? "";
-
+import BaseService from "./base.service";
 import type { Post } from "./models/post.model";
 
+// TODO: Create data transfer objects
 export type PostFindAllResponse = {
   data?: Post[];
   err?: unknown;
@@ -9,11 +9,13 @@ export type PostFindAllResponse = {
   total: number;
 };
 
-class PostService {
-  async _request(method: RequestInit["method"], path: string, params?: object) {
-    const headers = { "Content-Type": "application/json" };
-    const baseUrl = new URL(`${WORDPRESS_API_URL}${path}`);
-    const query = new URLSearchParams({
+class PostService extends BaseService {
+  async _requestPosts(
+    method: RequestInit["method"],
+    path?: string,
+    params?: object
+  ) {
+    const body = new URLSearchParams({
       _fields: [
         "date",
         "date_gmt",
@@ -31,22 +33,18 @@ class PostService {
       ...params,
     });
 
-    baseUrl.searchParams.forEach((value, key) => query.append(key, value));
-
-    const url = `${baseUrl.origin}${baseUrl.pathname}?${query.toString()}`;
-
-    const res = await fetch(url, {
-      method: "GET",
-      headers,
+    return this._request(`/wp/v2/posts${path}`, {
+      method,
+      body,
     });
-
-    return res;
   }
 
   async findAll(queryPage = 1): Promise<PostFindAllResponse> {
     const page = queryPage ?? 1;
 
-    const res = await this._request("GET", "/posts", { page: String(page) });
+    const res = await this._requestPosts("GET", "", {
+      page: String(page),
+    });
 
     const total = Number(res.headers.get("X-WP-Total"));
 
@@ -79,7 +77,7 @@ class PostService {
   }
 
   async findOne(slug: Post["slug"]): Promise<Post | undefined> {
-    const res = await this._request("GET", "/posts", { slug });
+    const res = await this._requestPosts("GET", "", { slug });
     const json = await res.json();
     return json[0];
   }

@@ -40,11 +40,14 @@ services:
       WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
       WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
       WORDPRESS_TABLE_PREFIX: "${WORDPRESS_TABLE_PREFIX}"
+      WORDPRESS_CONFIG_EXTRA: "define('API_SECRET', '${WORDPRESS_API_SECRET}');"
 
   www:
     build: packages/www
     container_name: www
     restart: unless-stopped
+    environment:
+      WWW_WP_API_SECRET: "${WORDPRESS_API_SECRET}"
 
 volumes:
   db_data: {}
