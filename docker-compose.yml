@@ -47,7 +47,8 @@ services:
     container_name: www
     restart: unless-stopped
     environment:
-      WWW_WP_API_SECRET: "${WORDPRESS_API_SECRET}"
+      WORDPRESS_API_URL: "http://wordpress/?rest_route="
+      WORDPRESS_API_SECRET: "${WORDPRESS_API_SECRET}"
 
 volumes:
   db_data: {}
