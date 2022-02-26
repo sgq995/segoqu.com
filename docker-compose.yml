@@ -43,6 +43,8 @@ services:
       WORDPRESS_CONFIG_EXTRA: "define('API_SECRET', '${WORDPRESS_API_SECRET}');"
 
   www:
+    depends_on:
+      - wordpress
     build: packages/www
     container_name: www
     restart: unless-stopped
