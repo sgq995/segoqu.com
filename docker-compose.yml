@@ -14,6 +14,8 @@ services:
     container_name: db
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
@@ -31,20 +33,44 @@ services:
       - db
     build: wordpress
     container_name: wordpress
-    # volumes:
-    #   - wordpress_data:/var/www/html
+    volumes:
+      - wordpress_data:/var/www/html
     restart: unless-stopped
     environment:
       WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
-      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
-      WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
-      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
+      WORDPRESS_DB_USER: "${MARIADB_USER}"
+      WORDPRESS_DB_PASSWORD: "${MARIADB_PASSWORD}"
+      WORDPRESS_DB_NAME: "${MARIADB_DATABASE}"
       WORDPRESS_TABLE_PREFIX: "${WORDPRESS_TABLE_PREFIX}"
       WORDPRESS_CONFIG_EXTRA: "define('API_SECRET', '${WORDPRESS_API_SECRET}');"
 
-  www:
+  wp-cli:
     depends_on:
-      - wordpress
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    image: wordpress:cli
+    container_name: wp-cli
+    user: xfs
+    command: /bin/bash /var/www/install.sh
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wordpress/install.sh:/var/www/install.sh
+    environment: 
+      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+      WORDPRESS_DB_USER: "${MARIADB_USER}"
+      WORDPRESS_DB_PASSWORD: "${MARIADB_PASSWORD}"
+      WORDPRESS_DB_NAME: "${MARIADB_DATABASE}"
+      WORDPRESS_TABLE_PREFIX: "${WORDPRESS_TABLE_PREFIX}"
+      WORDPRESS_CONFIG_EXTRA: "define('API_SECRET', '${WORDPRESS_API_SECRET}');"
+      WP_URL: "${WP_URL}"
+      WP_TITLE: "${WP_TITLE}"
+      WP_ADMIN_USER: "${WP_ADMIN_USER}"
+      WP_ADMIN_PASSWORD: "${WP_ADMIN_PASSWORD}"
+      WP_ADMIN_MAIL: "${WP_ADMIN_MAIL}"
+
+  www:
     build: packages/www
     container_name: www
     restart: unless-stopped
