@@ -63,6 +63,8 @@ class PostService extends BaseService {
       } else {
         return {
           ...json,
+          data: undefined,
+          err: json.data,
           page,
           total,
         };

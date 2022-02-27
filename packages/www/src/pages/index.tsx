@@ -48,7 +48,13 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 export default Home;
 
 export async function getStaticProps() {
-  const posts = await PostService.findAll();
+  let posts;
+  try {
+    posts = await PostService.findAll();
+  } catch (err) {
+    posts = {};
+  }
+
   return {
     props: { posts },
     revalidate: 10,
