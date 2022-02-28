@@ -1,0 +1,88 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy CD
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: SSH Configuration
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cat >> ~/.ssh/config <<END
+          Host remote
+            HostName $SSH_HOST
+            Port $SSH_PORT
+            User $SSH_USER
+            IdentityFile ~/.ssh/id_rsa
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+    
+      - name: Environment
+        run: |
+          cat >> ~/.env <<END
+          MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
+          MARIADB_DATABASE=$MARIADB_DATABASE
+          MARIADB_USER=$MARIADB_USER
+          MARIADB_PASSWORD=$MARIADB_PASSWORD
+
+          WORDPRESS_DB_HOST=$WORDPRESS_DB_HOST
+          WORDPRESS_TABLE_PREFIX=$WORDPRESS_TABLE_PREFIX
+          WORDPRESS_API_SECRET=$WORDPRESS_API_SECRET
+
+          WP_URL=$WP_URL
+          WP_TITLE=$WP_TITLE
+          WP_ADMIN_USER=$WP_ADMIN_USER
+          WP_ADMIN_PASSWORD=$WP_ADMIN_PASSWORD
+          WP_ADMIN_MAIL=$WP_ADMIN_MAIL
+          END
+        env:
+          MARIADB_ROOT_PASSWORD: ${{ secrets.MARIADB_ROOT_PASSWORD }}
+          MARIADB_DATABASE: ${{ secrets.MARIADB_DATABASE }}
+          MARIADB_USER: ${{ secrets.MARIADB_USER }}
+          MARIADB_PASSWORD: ${{ secrets.MARIADB_PASSWORD }}
+
+          WORDPRESS_DB_HOST: ${{ secrets.WORDPRESS_DB_HOST }}
+          WORDPRESS_TABLE_PREFIX: ${{ secrets.WORDPRESS_TABLE_PREFIX }}
+          WORDPRESS_API_SECRET: ${{ secrets.WORDPRESS_API_SECRET }}
+
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_TITLE: ${{ secrets.WP_TITLE }}
+          WP_ADMIN_USER: ${{ secrets.WP_ADMIN_USER }}
+          WP_ADMIN_PASSWORD: ${{ secrets.WP_ADMIN_PASSWORD }}
+          WP_ADMIN_MAIL: ${{ secrets.WP_ADMIN_MAIL }}
+    
+      - name: Copying files
+        run: |
+          rsync -az . remote:~/
+
+      - name: Running docker
+        run: |
+          ssh remote "docker-compose -f ~/docker-compose.yml build"
+          ssh remote "docker-compose -f ~/docker-compose.yml up --no-deps -d"
