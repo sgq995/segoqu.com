@@ -18,8 +18,6 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ posts }) => {
-  console.log({ posts });
-
   return (
     <>
       <Head>
@@ -52,7 +50,10 @@ export async function getStaticProps() {
   try {
     posts = await PostService.findAll();
   } catch (err) {
-    posts = {};
+    posts = {
+      page: 0,
+      total: 0,
+    };
   }
 
   return {

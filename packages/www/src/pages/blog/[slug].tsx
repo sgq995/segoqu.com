@@ -4,7 +4,9 @@ import Head from "next/head";
 import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 
-import postService from "../../services/wordpress/post.service";
+import postService, {
+  PostFindAllResponse,
+} from "../../services/wordpress/post.service";
 import { Post } from "../../services/wordpress/models/post.model";
 
 interface BlogPostProps {
@@ -37,12 +39,19 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
 export default BlogPost;
 
 export async function getStaticPaths() {
-  const posts = await postService.findAll();
+  let posts: PostFindAllResponse;
+  try {
+    posts = await postService.findAll();
+  } catch (err) {
+    posts = { page: 0, total: 0 };
+  }
+
   const paths = posts.data?.map((post) => {
     return {
       params: { slug: post.slug },
     };
-  });
+  }) ?? [];
+
   return {
     paths,
     fallback: "blocking",
@@ -53,7 +62,7 @@ export const getStaticProps: GetStaticProps<
   BlogPostProps,
   { slug: string }
 > = async ({ params }) => {
-  let post;
+  let post: Post | null;
   try {
     post = await postService.findOne(params?.slug ?? "");
   } catch (err) {
@@ -64,7 +73,7 @@ export const getStaticProps: GetStaticProps<
     return {
       notFound: true,
       // TODO: Define time constant, e. g. SECOND = 1, MINUTE = 60, HOUR = 3600
-      revalidate: 3600
+      revalidate: 3600,
     };
   }
 
