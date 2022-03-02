@@ -63,7 +63,7 @@ class PostService extends BaseService {
       } else {
         return {
           ...json,
-          data: undefined,
+          data: null,
           err: json.data,
           page,
           total,
@@ -81,7 +81,7 @@ class PostService extends BaseService {
   async findOne(slug: Post["slug"]): Promise<Post | null> {
     const res = await this._requestPosts("GET", "", { slug });
     const json = await res.json();
-    return json[0] || null;
+    return json[0] ?? null;
   }
 }
 

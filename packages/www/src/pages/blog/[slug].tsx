@@ -18,7 +18,7 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
     return (
       <>
         <Head>
-          <title>{post.title}</title>
+          <title>{post.title.rendered}</title>
           <meta name="description" content={post.excerpt.rendered} />
           <link rel="icon" href="/favicon.ico" />
           {/* TODO: Add keywords, tags, categories SEO */}

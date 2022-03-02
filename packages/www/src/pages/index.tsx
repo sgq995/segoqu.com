@@ -46,7 +46,7 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 export default Home;
 
 export async function getStaticProps() {
-  let posts;
+  let posts: PostFindAllResponse;
   try {
     posts = await PostService.findAll();
   } catch (err) {
