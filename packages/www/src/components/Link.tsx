@@ -53,7 +53,7 @@ export const NextLinkComposed = React.forwardRef<
   );
 });
 
-interface LinkProps {
+interface ILinkProps {
   activeClassName?: string;
   as?: NextLinkProps["as"];
   className?: string;
@@ -62,6 +62,16 @@ interface LinkProps {
   noLinkStyle?: boolean;
   role?: string;
 }
+
+type LinkProps = React.PropsWithChildren<ILinkProps> &
+  Omit<
+    React.DetailedHTMLProps<
+      React.AnchorHTMLAttributes<HTMLAnchorElement>,
+      HTMLAnchorElement
+    >,
+    "href"
+  > &
+  Omit<React.ComponentProps<typeof MuiLink>, "href">;
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/api-reference/next/link

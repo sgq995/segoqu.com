@@ -2,7 +2,9 @@ import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import Stack from "@mui/material/Stack";
-import { Typography } from "@mui/material";
+import { Box, Breadcrumbs, Typography } from "@mui/material";
+
+import Link from "../../components/Link";
 
 import postService, {
   PostFindAllResponse,
@@ -23,6 +25,15 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
           <link rel="icon" href="/favicon.ico" />
           {/* TODO: Add keywords, tags, categories SEO */}
         </Head>
+
+        <Box sx={{ mb: 4 }}>
+          <Breadcrumbs>
+            <Link underline="hover" href="/">
+              Home
+            </Link>
+            <Typography color="text.primary">{post.title.rendered}</Typography>
+          </Breadcrumbs>
+        </Box>
 
         <Stack>
           <Typography variant="subtitle2">{post.date}</Typography>
@@ -46,11 +57,12 @@ export async function getStaticPaths() {
     posts = { page: 0, total: 0 };
   }
 
-  const paths = posts.data?.map((post) => {
-    return {
-      params: { slug: post.slug },
-    };
-  }) ?? [];
+  const paths =
+    posts.data?.map((post) => {
+      return {
+        params: { slug: post.slug },
+      };
+    }) ?? [];
 
   return {
     paths,
