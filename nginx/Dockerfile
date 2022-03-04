@@ -11,6 +11,6 @@ RUN rm /etc/nginx/conf.d/default.conf && \
 
 COPY conf.d /etc/nginx/templates
 
-COPY certbot-init.sh /usr/src/certbot-init.sh
+COPY certbot-init.sh /docker-entrypoint.d/99-certbot-init.sh
 
-RUN nohup sh /usr/src/certbot-init.sh
+RUN chmod +x /docker-entrypoint.d/99-certbot-init.sh

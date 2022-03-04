@@ -12,20 +12,22 @@ domains() {
 }
 
 main() {
+  until [ -f /var/run/nginx.pid ]
+  do
+    sleep 5
+  done
+
   domains
+  echo $domain_list
 
   echo $domain_list \
     | xargs certbot --nginx \
       -m "sgq995@gmail.com" \
       --agree-tos \
-      --eff-email 
+      --eff-email \
+      --reinstall
       # --hsts \
       # --uir
 }
 
-until [ -f /var/run/nginx.pid ]
-do
-  sleep 5
-done
-
-main
+main &
