@@ -41,7 +41,7 @@ services:
       - wordpress_data:/var/www/html
     restart: unless-stopped
     environment:
-      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST:-db}"
       WORDPRESS_DB_USER: "${MARIADB_USER}"
       WORDPRESS_DB_PASSWORD: "${MARIADB_PASSWORD}"
       WORDPRESS_DB_NAME: "${MARIADB_DATABASE}"
@@ -62,7 +62,7 @@ services:
       - wordpress_data:/var/www/html
       - ./wordpress/install.sh:/var/www/install.sh
     environment: 
-      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST:-db}"
       WORDPRESS_DB_USER: "${MARIADB_USER}"
       WORDPRESS_DB_PASSWORD: "${MARIADB_PASSWORD}"
       WORDPRESS_DB_NAME: "${MARIADB_DATABASE}"
