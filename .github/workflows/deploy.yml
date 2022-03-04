@@ -80,9 +80,13 @@ jobs:
     
       - name: Copying files
         run: |
-          rsync -az . remote:~/
+          ssh remote "mkdir -p ~/segoqu"
+          rsync --delete-after -az . remote:~/segoqu
 
       - name: Running docker
         run: |
-          ssh remote "docker-compose -f ~/docker-compose.yml build"
-          ssh remote "docker-compose -f ~/docker-compose.yml up --no-deps -d"
+          ssh remote "docker-compose -f ~/segoqu/docker-compose.yml stop www"
+          ssh remote "docker-compose -f ~/segoqu/docker-compose.yml stop api"
+          ssh remote "docker-compose -f ~/segoqu/docker-compose.yml stop wordpress"
+          ssh remote "docker-compose -f ~/segoqu/docker-compose.yml build"
+          ssh remote "docker-compose -f ~/segoqu/docker-compose.yml up -d"
