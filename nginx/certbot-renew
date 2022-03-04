@@ -1,1 +1,1 @@
-/usr/bin/certbot renew --quiet
+/usr/bin/certbot renew --keep-until-expiring --renew-with-new-domains --quiet

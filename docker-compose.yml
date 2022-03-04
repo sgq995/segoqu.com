@@ -4,6 +4,8 @@ services:
   nginx:
     build: nginx
     container_name: nginx
+    volumes:
+      - nginx_letsencrypt:/etc/letsencrypt
     restart: unless-stopped
     ports:
       - 80:80
@@ -81,5 +83,6 @@ services:
       WORDPRESS_API_SECRET: "${WORDPRESS_API_SECRET}"
 
 volumes:
+  nginx_letsencrypt: {}
   db_data: {}
   wordpress_data: {}

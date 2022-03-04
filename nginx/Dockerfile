@@ -10,3 +10,7 @@ RUN rm /etc/nginx/conf.d/default.conf && \
   mv /usr/share/nginx/html/index.html /usr/share/nginx/html/nginx-index.html
 
 COPY conf.d /etc/nginx/templates
+
+COPY certbot-init.sh /usr/src/certbot-init.sh
+
+RUN nohup sh /usr/src/certbot-init.sh
