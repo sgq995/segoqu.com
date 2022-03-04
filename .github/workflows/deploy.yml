@@ -46,7 +46,7 @@ jobs:
     
       - name: Environment
         run: |
-          cat >> ~/.env <<END
+          cat >> ./.env <<END
           MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
           MARIADB_DATABASE=$MARIADB_DATABASE
           MARIADB_USER=$MARIADB_USER
