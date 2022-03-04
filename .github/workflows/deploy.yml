@@ -81,7 +81,7 @@ jobs:
       - name: Copying files
         run: |
           ssh remote "mkdir -p ~/segoqu"
-          rsync --delete-after -az . remote:~/segoqu
+          rsync --delete-after --exclude=.git* -az . remote:~/segoqu
 
       - name: Running docker
         run: |
