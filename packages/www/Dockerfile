@@ -1,11 +1,18 @@
-# Builder
-FROM node:16-alpine AS builder
+# Deps
+FROM node:16-alpine AS deps
 
 WORKDIR /usr/src
 
 COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile
+
+# Builder
+FROM node:16-alpine AS builder
+
+WORKDIR /usr/src
+
+COPY --from=deps /usr/src/node_modules ./node_modules
 
 COPY . .
 
@@ -14,17 +21,18 @@ RUN yarn run build
 # Runner
 FROM node:16-alpine AS runner
 
-ENV NODE_ENV production
-
-USER node
-
 WORKDIR /home/node
 
-COPY --from=builder --chown=node:node /usr/src/package.json /usr/src/yarn.lock ./
+ENV NODE_ENV production
 
-RUN yarn install --production=true --frozen-lockfile
+COPY --from=deps --chown=node:node /usr/src/node_modules ./node_modules
+
+COPY --from=builder --chown=node:node /usr/src/public ./public
+COPY --from=builder --chown=node:node /usr/src/package.json ./package.json
 
 COPY --from=builder --chown=node:node /usr/src/.next ./.next
+
+USER node
 
 EXPOSE 3000
 
