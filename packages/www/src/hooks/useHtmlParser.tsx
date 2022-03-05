@@ -1,27 +1,21 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 import Link from "@mui/material/Link";
-import Typography, { TypographyProps } from "@mui/material/Typography";
 
 import Paragraph from "../components/Paragraph";
+import { H1, H2, H3, H4, H5, H6 } from "../components/Heading";
 
 import { HTMLParser, HTMLParserFactory } from "../utils/react-html";
-
-function HeadingFactory(variant: TypographyProps["variant"]) {
-  return (props: TypographyProps) => {
-    return <Typography variant={variant} {...props} />;
-  };
-}
 
 const mapHTMLToReact = {
   p: Paragraph,
   a: Link,
-  h1: HeadingFactory("h1"),
-  h2: HeadingFactory("h2"),
-  h3: HeadingFactory("h3"),
-  h4: HeadingFactory("h4"),
-  h5: HeadingFactory("h5"),
-  h6: HeadingFactory("h6"),
+  h1: H1,
+  h2: H2,
+  h3: H3,
+  h4: H4,
+  h5: H5,
+  h6: H6,
 };
 
 const useHtmlParser = (content: string) => {
