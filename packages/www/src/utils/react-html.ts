@@ -24,15 +24,15 @@ export interface HTMLParser {
   (html: string): ReactNode[];
 }
 
-function logObjectElement(element: Element) {
-  return {
-    element,
-    attrs: element.attributes,
-    classList: element.classList,
-    childNodes: element.childNodes,
-    children: Array.from(element.children).map(logObjectElement),
-  };
-}
+// function logObjectElement(element: Element) {
+//   return {
+//     element,
+//     attrs: element.attributes,
+//     classList: element.classList,
+//     childNodes: element.childNodes,
+//     children: Array.from(element.children).map(logObjectElement),
+//   };
+// }
 
 const CUSTOM_PROPERTY_REGEX = /^--[a-zA-Z0-9-]+$/;
 const HYPHEN_REGEX = /-([a-z])/g;
@@ -43,7 +43,7 @@ function styleToObject(style: string) {
   return style
     .replace(HYPHEN_REGEX, (_, initial) => initial.toUpperCase())
     .split(";")
-    .reduce<{ [K: string]: string }>((style, statement) => {
+    .reduce<Record<string, string>>((style, statement) => {
       const [property, value]: string[] = statement.split(":");
       style[property] = value;
       return style;
@@ -74,9 +74,7 @@ export function HTMLParserFactory(mapHTMLToReact: MapHTMLToReact): HTMLParser {
         props[propName] = attribute.nodeValue;
         return props;
       },
-      {
-        key: index,
-      }
+      { key: index }
     );
   }
 
@@ -119,7 +117,6 @@ export function HTMLParserFactory(mapHTMLToReact: MapHTMLToReact): HTMLParser {
     const div = document.createElement("div");
     div.innerHTML = html;
     const children = Array.from(div.childNodes);
-
 
     return convertChildren(children);
   };
