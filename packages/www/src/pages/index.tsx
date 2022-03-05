@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
@@ -33,7 +34,10 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
               <CardContent>
                 <Typography variant="subtitle2">{post.date}</Typography>
                 <Typography variant="h3">{post.title.rendered}</Typography>
-                <Typography variant="body2">{post.excerpt.rendered}</Typography>
+                <Box
+                  sx={{ typography: "body2" }}
+                  dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                />
               </CardContent>
             </CardActionArea>
           </Card>

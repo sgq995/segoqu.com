@@ -11,12 +11,16 @@ import postService, {
 } from "../../services/wordpress/post.service";
 import { Post } from "../../services/wordpress/models/post.model";
 
+import useHtmlParser from "../../hooks/useHtmlParser";
+
 interface BlogPostProps {
   post?: Post;
 }
 
 const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
   if (post) {
+    const content = useHtmlParser(post.content.rendered);
+
     return (
       <>
         <Head>
@@ -37,8 +41,14 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
 
         <Stack>
           <Typography variant="subtitle2">{post.date}</Typography>
-          <Typography variant="h3">{post.title.rendered}</Typography>
-          <Typography variant="body2">{post.content.rendered}</Typography>
+          <Typography variant="h2">{post.title.rendered}</Typography>
+
+          {/* <Box
+            sx={{ maxWidth: '100%' }} 
+            dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+          /> */}
+
+          {content}
         </Stack>
       </>
     );
