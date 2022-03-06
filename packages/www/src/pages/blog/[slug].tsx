@@ -43,11 +43,6 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
           <Typography variant="subtitle2">{post.date}</Typography>
           <Typography variant="h2">{post.title.rendered}</Typography>
 
-          {/* <Box
-            sx={{ maxWidth: '100%' }} 
-            dangerouslySetInnerHTML={{ __html: post.content.rendered }}
-          /> */}
-
           {content}
         </Stack>
       </>

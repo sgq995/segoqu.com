@@ -1,5 +1,7 @@
 import { NextComponentType } from "next";
 
+import { HTMLProps } from "react";
+
 import { GridProps } from "@mui/material/Grid";
 
 import Container from "./Container";
@@ -15,7 +17,9 @@ const ColumnElement: NextComponentType = ({
     return <Column {...props} />;
   }
 
-  return <></>;
+  return (
+    <div className={className} {...(props as HTMLProps<HTMLDivElement>)} />
+  );
 };
 
 export default ColumnElement;

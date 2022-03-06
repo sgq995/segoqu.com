@@ -27,6 +27,8 @@ ENV NODE_ENV production
 
 COPY --from=deps --chown=node:node /usr/src/node_modules ./node_modules
 
+COPY --from=builder --chown=node:node /usr/src/next.config.js ./next.config.js
+
 COPY --from=builder --chown=node:node /usr/src/public ./public
 COPY --from=builder --chown=node:node /usr/src/package.json ./package.json
 
