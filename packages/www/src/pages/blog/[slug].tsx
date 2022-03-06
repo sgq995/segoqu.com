@@ -18,9 +18,9 @@ interface BlogPostProps {
 }
 
 const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
-  if (post) {
-    const content = useHtmlParser(post.content.rendered);
+  const content = useHtmlParser(post?.content.rendered ?? "");
 
+  if (post) {
     return (
       <>
         <Head>
