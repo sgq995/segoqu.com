@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.is-style-rounded img {
+  border-radius: 50%;
+}
