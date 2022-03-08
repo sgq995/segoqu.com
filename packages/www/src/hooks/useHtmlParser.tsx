@@ -3,16 +3,16 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import Link from "@mui/material/Link";
 
 import ContentImage from "../components/ContentImage";
-import ColumnSystem from "../components/ColumnSystem";
 import FigCaption from "../components/FigCaption";
 import Figure from "../components/Figure";
+import GridSystem from "../components/GridSystem";
 import { H1, H2, H3, H4, H5, H6 } from "../components/Heading";
 import Paragraph from "../components/Paragraph";
 
 import { HTMLParser, HTMLParserFactory } from "../utils/react-html";
 
 const mapHTMLToReact = {
-  div: ColumnSystem,
+  div: GridSystem,
   h1: H1,
   h2: H2,
   h3: H3,
