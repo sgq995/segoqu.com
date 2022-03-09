@@ -27,15 +27,18 @@ const mapHTMLToReact = {
 };
 
 const useHtmlParser = (content: string) => {
-  const parserRef = useRef<HTMLParser>();
-  const [rendered, setRendered] = useState<ReactNode[]>();
+  // const parserRef = useRef<HTMLParser>();
+  // const [rendered, setRendered] = useState<ReactNode[]>();
 
-  useEffect(() => {
-    parserRef.current = HTMLParserFactory(mapHTMLToReact);
-    setRendered(parserRef.current(content));
-  }, [content]);
+  // useEffect(() => {
+  // parserRef.current = HTMLParserFactory(mapHTMLToReact);
+  // setRendered(parserRef.current(content));
+  // }, [content]);
 
-  return rendered;
+  // return rendered;
+  
+  const parserRef = useRef<HTMLParser>(HTMLParserFactory(mapHTMLToReact));
+  return parserRef.current(content);
 };
 
 export default useHtmlParser;
