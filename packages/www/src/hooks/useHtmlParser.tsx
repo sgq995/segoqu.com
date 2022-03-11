@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
 import Link from "@mui/material/Link";
 
@@ -27,16 +27,6 @@ const mapHTMLToReact = {
 };
 
 const useHtmlParser = (content: string) => {
-  // const parserRef = useRef<HTMLParser>();
-  // const [rendered, setRendered] = useState<ReactNode[]>();
-
-  // useEffect(() => {
-  // parserRef.current = HTMLParserFactory(mapHTMLToReact);
-  // setRendered(parserRef.current(content));
-  // }, [content]);
-
-  // return rendered;
-  
   const parserRef = useRef<HTMLParser>(HTMLParserFactory(mapHTMLToReact));
   return parserRef.current(content);
 };

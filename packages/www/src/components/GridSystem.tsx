@@ -1,9 +1,11 @@
-import { NextComponentType } from "next";
-
 import { HTMLProps } from "react";
 
-import Box, { BoxProps } from "@mui/material/Box";
-import Grid, { GridProps } from "@mui/material/Grid";
+import { NextComponentType } from "next";
+
+import type { BoxProps } from "@mui/material/Box";
+import type { GridProps } from "@mui/material/Grid";
+
+import { Box, Grid } from "./Material";
 
 const GridSystem: NextComponentType = ({
   className,

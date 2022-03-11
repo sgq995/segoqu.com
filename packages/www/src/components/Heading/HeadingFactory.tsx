@@ -1,4 +1,6 @@
-import Typography, { TypographyProps } from "@mui/material/Typography";
+import type { TypographyProps } from "@mui/material/Typography";
+
+import { Typography } from "../Material";
 
 function HeadingFactory(variant: TypographyProps["variant"]) {
   function Heading(props: TypographyProps) {

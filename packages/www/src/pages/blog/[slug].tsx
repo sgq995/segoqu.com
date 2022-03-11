@@ -1,15 +1,11 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
-import Stack from "@mui/material/Stack";
-import { Box, Breadcrumbs, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Stack, Typography } from "../../components/Material";
 
 import Link from "../../components/Link";
 
-import postService, {
-  PostFindAllResponse,
-} from "../../services/wordpress/post.service";
-import { Post } from "../../services/wordpress/models/post.model";
+import type { Post } from "../../services/wordpress/models/post.model";
 
 import useHtmlParser from "../../hooks/useHtmlParser";
 
@@ -54,7 +50,13 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
 
 export default BlogPost;
 
+import type { PostFindAllResponse } from "../../services/wordpress/post.service";
+
 export async function getStaticPaths() {
+  const { default: postService } = await import(
+    "../../services/wordpress/post.service"
+  );
+
   let posts: PostFindAllResponse;
   try {
     posts = await postService.findAll();
@@ -79,6 +81,10 @@ export const getStaticProps: GetStaticProps<
   BlogPostProps,
   { slug: string }
 > = async ({ params }) => {
+  const { default: postService } = await import(
+    "../../services/wordpress/post.service"
+  );
+
   let post: Post | null;
   try {
     post = await postService.findOne(params?.slug ?? "");

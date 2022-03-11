@@ -1,18 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  Stack,
+  Typography,
+} from "../components/Material";
 
 import Link from "../components/Link";
-
-import PostService, {
-  PostFindAllResponse,
-} from "../services/wordpress/post.service";
 
 interface HomeProps {
   posts: PostFindAllResponse;
@@ -49,7 +47,13 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 
 export default Home;
 
+import type { PostFindAllResponse } from "../services/wordpress/post.service";
+
 export async function getStaticProps() {
+  const { default: PostService } = await import(
+    "../services/wordpress/post.service"
+  );
+
   let posts: PostFindAllResponse;
   try {
     posts = await PostService.findAll();

@@ -1,13 +1,16 @@
 import { NextComponentType } from "next";
 
-import AppBar from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import Stack from "@mui/material/Stack";
-import Toolbar from "@mui/material/Toolbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Typography } from "@mui/material";
-import Box from "@mui/system/Box";
+
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Container,
+  Stack,
+  Toolbar,
+  Typography,
+} from "./Material";
 
 const theme = createTheme();
 
