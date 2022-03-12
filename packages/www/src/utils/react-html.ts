@@ -1,5 +1,4 @@
 import { createElement, ElementType, ReactNode } from "react";
-// import { JSDOM } from "jsdom";
 
 const mapAttrToReact: { [attr: string]: string } = {
   class: "className",
@@ -18,16 +17,6 @@ interface MapHTMLToReact {
 export interface HTMLParser {
   (html: string): ReactNode[];
 }
-
-// function logObjectElement(element: Element) {
-//   return {
-//     element,
-//     attrs: element.attributes,
-//     classList: element.classList,
-//     childNodes: element.childNodes,
-//     children: Array.from(element.children).map(logObjectElement),
-//   };
-// }
 
 const CUSTOM_PROPERTY_REGEX = /^--[a-zA-Z0-9-]+$/;
 const HYPHEN_REGEX = /-([a-z])/g;

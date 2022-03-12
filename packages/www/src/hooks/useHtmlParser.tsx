@@ -2,6 +2,7 @@ import { useRef } from "react";
 
 import Link from "@mui/material/Link";
 
+import Code from "../components/Code";
 import ContentImage from "../components/ContentImage";
 import FigCaption from "../components/FigCaption";
 import Figure from "../components/Figure";
@@ -24,6 +25,7 @@ const mapHTMLToReact = {
   img: ContentImage,
   figure: Figure,
   figcaption: FigCaption,
+  pre: Code,
 };
 
 const useHtmlParser = (content: string) => {
