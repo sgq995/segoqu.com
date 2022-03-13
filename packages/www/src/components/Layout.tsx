@@ -12,7 +12,7 @@ import {
   Typography,
 } from "./Material";
 
-const theme = createTheme();
+import theme from "../theme";
 
 const Layout: NextComponentType = ({ children }) => {
   return (
