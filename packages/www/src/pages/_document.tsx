@@ -50,8 +50,25 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta charSet="utf-8" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+
           <meta name="viewport" content="initial-scale=1, width=device-width" />
+          <meta name="theme-color" content={theme.palette.primary.main} />
+
+          <link rel="manifest" href="/manifest.json" />
+          <link
+            href="/icons/favicon-16x16.png"
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+          />
+          <link
+            href="/icons/favicon-32x32.png"
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+          />
 
           {(this.props as any).emotionStyleTags}
         </Head>
