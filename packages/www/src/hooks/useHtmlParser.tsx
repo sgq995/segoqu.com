@@ -10,7 +10,7 @@ import GridSystem from "../components/GridSystem";
 import { H1, H2, H3, H4, H5, H6 } from "../components/Heading";
 import Paragraph from "../components/Paragraph";
 
-import { HTMLParser, HTMLParserFactory } from "../utils/react-html";
+import { HTMLParser, HTMLParserFactory } from "../utilities/react-html.utility";
 
 const mapHTMLToReact = {
   div: GridSystem,
@@ -28,9 +28,9 @@ const mapHTMLToReact = {
   pre: Code,
 };
 
-const useHtmlParser = (content: string) => {
+const useHtmlParser = () => {
   const parserRef = useRef<HTMLParser>(HTMLParserFactory(mapHTMLToReact));
-  return parserRef.current(content);
+  return parserRef.current;
 };
 
 export default useHtmlParser;

@@ -14,7 +14,8 @@ interface BlogPostProps {
 }
 
 const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
-  const content = useHtmlParser(post?.content.rendered ?? "");
+  const htmlParse = useHtmlParser();
+  const content = htmlParse(post?.content.rendered ?? "");
 
   if (post) {
     return (
@@ -36,7 +37,9 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
         </Box>
 
         <Stack>
-          <Typography variant="subtitle2">{post.date}</Typography>
+          <Typography variant="subtitle2">
+            {DateFormatter(post.date)}
+          </Typography>
           <Typography variant="h2">{post.title.rendered}</Typography>
 
           {content}
@@ -51,6 +54,7 @@ const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
 export default BlogPost;
 
 import type { PostFindAllResponse } from "../../services/wordpress/post.service";
+import DateFormatter from "../../utilities/date-formatter.utility";
 
 export async function getStaticPaths() {
   const { default: postService } = await import(

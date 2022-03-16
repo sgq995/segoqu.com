@@ -1,13 +1,10 @@
 import React from "react";
-import type { ReactElement } from "react";
 
 import { NextComponentType } from "next";
 
 import { Box, Paper } from "./Material";
 
-function instanceofReactElement(object: any): object is ReactElement {
-  return "type" in object && "props" in object;
-}
+import { instanceofReactElement } from "../utilities/types-helper.utility";
 
 const Code: NextComponentType = ({ children }: React.PropsWithChildren<{}>) => {
   const code = React.Children.toArray(children)[0];

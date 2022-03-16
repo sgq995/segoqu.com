@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 import type { NextPage } from "next";
 import Head from "next/head";
 
@@ -12,11 +14,31 @@ import {
 
 import Link from "../components/Link";
 
+import DateFormatter from "../utilities/date-formatter.utility";
+import { instanceofReactElement } from "../utilities/types-helper.utility";
+
+import type { PostFindAllResponse } from "../services/wordpress/post.service";
+import useHtmlParser from "../hooks/useHtmlParser";
+
 interface HomeProps {
   posts: PostFindAllResponse;
 }
 
+function getTextContent(components: ReactNode[]): string[] {
+  return components
+    .flatMap((child) => {
+      if (typeof child === "string") {
+        return child;
+      } else if (instanceofReactElement(child)) {
+        return getTextContent(child.props?.children ?? []);
+      }
+    })
+    .filter<string>((child): child is string => typeof child === "string");
+}
+
 const Home: NextPage<HomeProps> = ({ posts }) => {
+  const htmlParse = useHtmlParser();
+
   return (
     <>
       <Head>
@@ -30,12 +52,17 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
           <Card key={post.id} variant="outlined">
             <CardActionArea component={Link} href={`/blog/${post.slug}`}>
               <CardContent>
-                <Typography variant="subtitle2">{post.date}</Typography>
+                <Typography variant="subtitle2">
+                  {DateFormatter(post.date)}
+                </Typography>
                 <Typography variant="h3">{post.title.rendered}</Typography>
-                <Box
+                {/* <Box
                   sx={{ typography: "body2" }}
                   dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
-                />
+                /> */}
+                <Typography variant="body2">
+                  {getTextContent(htmlParse(post.excerpt?.rendered ?? ""))}
+                </Typography>
               </CardContent>
             </CardActionArea>
           </Card>
@@ -46,8 +73,6 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
 };
 
 export default Home;
-
-import type { PostFindAllResponse } from "../services/wordpress/post.service";
 
 export async function getStaticProps() {
   const { default: PostService } = await import(

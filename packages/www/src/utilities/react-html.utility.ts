@@ -35,15 +35,13 @@ function styleToObject(style: string) {
 }
 
 export function HTMLParserFactory(mapHTMLToReact: MapHTMLToReact): HTMLParser {
-  // console.log({ window, global });
   if (typeof window === "undefined") {
-    console.log("Hello world");
     const { JSDOM } = require("jsdom");
     const dom = new JSDOM();
     global.Node = dom.window.Node;
     global.document = dom.window.document;
-  }  
-  
+  }
+
   const nodeMap = {
     [Node.ELEMENT_NODE]: ElementMap,
     [Node.TEXT_NODE]: TextMap,
