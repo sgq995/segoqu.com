@@ -26,6 +26,7 @@ const Container = dynamic<ContainerProps<React.ElementType>>(
   () => import("@mui/material/Container")
 );
 const Grid = dynamic(() => import("@mui/material/Grid"));
+const Slide = dynamic(() => import("@mui/material/Slide"));
 const Stack = dynamic(() => import("@mui/material/Stack"));
 const Paper = dynamic<PaperProps<React.ElementType>>(
   () => import("@mui/material/Paper")
@@ -45,6 +46,7 @@ export {
   CssBaseline,
   Container,
   Grid,
+  Slide,
   Stack,
   Paper,
   Toolbar,

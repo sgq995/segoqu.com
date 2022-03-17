@@ -1,6 +1,33 @@
 import { createTheme } from "@mui/material/styles";
+import { alpha } from "@mui/system/colorManipulator";
 
 const theme = createTheme({
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => {
+          const alphaValue = 0.5;
+
+          let backgroundColor;
+          if (
+            ownerState.color === "default" ||
+            ownerState.color === "primary"
+          ) {
+            backgroundColor = alpha(theme.palette.primary.main, alphaValue);
+          } else if (ownerState.color === "secondary") {
+            backgroundColor = alpha(theme.palette.secondary.main, alphaValue);
+          } else if (ownerState.color === "transparent") {
+            backgroundColor = "transparent";
+          }
+
+          return {
+            backgroundColor,
+            backdropFilter: "blur(20px)",
+          };
+        },
+      },
+    },
+  },
   typography: {
     h1: {
       fontFamily: "'Merriweather', serif",

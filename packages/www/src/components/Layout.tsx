@@ -1,6 +1,6 @@
 import { NextComponentType } from "next";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 
 import {
   AppBar,
